@@ -1,3 +1,3 @@
-# a_notes_app
+# api_integration
 
 A new Flutter project.

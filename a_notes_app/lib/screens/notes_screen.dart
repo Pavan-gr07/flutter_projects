@@ -1,4 +1,5 @@
 import 'package:a_notes_app/database/notes_database.dart';
+import 'package:a_notes_app/screens/note_card.dart';
 import 'package:a_notes_app/screens/note_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -20,30 +21,35 @@ class _NotesScreenState extends State<NotesScreen> {
 
   Future<void> fetchNotes() async {
     final fetchedNotes = await NotesDatabase.instance.getNotes();
-
+    print(fetchedNotes);
     setState(() {
       notes = fetchedNotes;
     });
   }
 
-final List<Color> noteColors = [
-  const Color(0xFFFFF3E0),
-  const Color(0xFFE1F5FE),
-  const Color(0xFFFFE4EC),
-  const Color(0xFFF8F9CF),
-  const Color(0xFFFFF9AB),
-  const Color(0xFFB2F9FC),
-  const Color(0xFFFFDF59A),
-  const Color(0xFFFFE4B5),
-  const Color(0xFFF9F8FB98),
-  const Color(0xFFFFFD700),
-  const Color(0xFFFAFEEE),
-  const Color(0xFFFFFB6C1),
-  const Color(0xFFFFFAD2),
-  const Color(0xFFD3D3D3),
-];
+  final List<Color> noteColors = [
+    const Color(0xFFFFF3E0),
+    const Color(0xFFE1F5FE),
+    const Color(0xFFFFE4EC),
+    const Color(0xFFF8F9CF),
+    const Color(0xFFFFF9AB),
+    const Color(0xFFB2F9FC),
+    const Color(0xFFFFDF59A),
+    const Color(0xFFFFE4B5),
+    const Color(0xFFF9F8FB98),
+    const Color(0xFFFFFD700),
+    const Color(0xFFFAFEEE),
+    const Color(0xFFFFFB6C1),
+    const Color(0xFFFFFAD2),
+    const Color(0xFFD3D3D3),
+  ];
 
-void showNoteDialog({int? id, String? title, String? content, int colorindex = 0}) {
+  void showNoteDialog({
+    int? id,
+    String? title,
+    String? content,
+    int colorindex = 0,
+  }) {
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -53,15 +59,27 @@ void showNoteDialog({int? id, String? title, String? content, int colorindex = 0
           noteId: id,
           title: title,
           content: content,
-          onNotSaved: (newTitle, newDescription, newColorIndex, currentDate) async {
-            if (id == null) {
-              await NotesDatabase.instance.addNote(newTitle, newDescription, currentDate, newColorIndex);
-            } else {
-              await NotesDatabase.instance.updateNote(newTitle, newDescription, currentDate, newColorIndex, id);
-            }
-            fetchNotes(); // Refresh notes after add/update
-            Navigator.of(dialogContext).pop(); // Close dialog
-          },
+          onNotSaved:
+              (newTitle, newDescription, newColorIndex, currentDate) async {
+                if (id == null) {
+                  await NotesDatabase.instance.addNote(
+                    newTitle,
+                    newDescription,
+                    currentDate,
+                    newColorIndex,
+                  );
+                } else {
+                  await NotesDatabase.instance.updateNote(
+                    newTitle,
+                    newDescription,
+                    currentDate,
+                    newColorIndex,
+                    id,
+                  );
+                }
+                fetchNotes(); // Refresh notes after add/update
+                Navigator.of(dialogContext).pop(); // Close dialog
+              },
         );
       },
     );
@@ -82,12 +100,13 @@ void showNoteDialog({int? id, String? title, String? content, int colorindex = 0
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        showNoteDialog();
-      },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showNoteDialog();
+        },
         backgroundColor: Colors.white,
-        child: const Icon(Icons.add,color:Colors.amber),
-        ),
+        child: const Icon(Icons.add, color: Colors.amber),
+      ),
       body: notes.isEmpty
           ? Center(
               child: Column(
@@ -119,7 +138,22 @@ void showNoteDialog({int? id, String? title, String? content, int colorindex = 0
                 itemBuilder: (context, index) {
                   final note = notes[index];
 
-                  return Text(note['title']);
+                  return NoteCard(
+                    note: note,
+                    onDelete: () async {
+                      await NotesDatabase.instance.deleteNote(note['id']);
+                      fetchNotes();
+                    },
+                    noteColors: noteColors,
+                    onTap: () {
+                      showNoteDialog(
+                        id: note['id'],
+                        title: note['title'],
+                        content: note['description'],
+                        colorindex: note['color'],
+                      );
+                    },
+                  );
                 },
               ),
             ),
