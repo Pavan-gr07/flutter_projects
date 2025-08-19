@@ -1,20 +1,21 @@
+import 'package:api_integration/screens/meme_home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MemeApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+
+class MemeApp extends StatelessWidget {
+  const MemeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+        theme: ThemeData(primaryColor: Colors.deepPurple,
+        visualDensity: VisualDensity.adaptivePlatformDensity),
+        home: MemeHomePage(),
+        );
   }
 }

@@ -1,4 +1,4 @@
-name: api_integration
+name: dice_app
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
@@ -9,10 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cached_network_image: ^3.4.1
-  http: ^1.5.0
-  palette_generator: ^0.3.3+1
-
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +17,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/dice-1.png
+    - assets/dice-2.png
+    - assets/dice-3.png
+    - assets/dice-4.png
+    - assets/dice-5.png
+    - assets/dice-6.png
+ 
