@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:whether_app/models/whether_model.dart';
+import 'package:weather_app/models/whether_model.dart';
 
 class WeatherCard extends StatelessWidget {
   final WhetherModel weather;

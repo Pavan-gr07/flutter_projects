@@ -1,9 +1,9 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:whether_app/models/whether_model.dart';
-import 'package:whether_app/services/weatherServices.dart';
-import 'package:whether_app/widgets/weather_card.dart';
+import 'package:weather_app/models/whether_model.dart';
+import 'package:weather_app/services/weatherServices.dart';
+import 'package:weather_app/widgets/weather_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,9 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Error caught--------------------: $error');
     
     // You can also show the specific error message to the user if you want
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Error: $error')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error in fetching the data')));
     
     setState(() {
       _isLoading = false;
@@ -74,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(25.0),
             child: Column(
               children: [
                 const SizedBox(height: 10),
@@ -86,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.white,
                   ),
                 ),
-
                 SizedBox(height: 10),
                 TextField(
                   controller: _controller,
@@ -106,18 +103,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20,),
                 ElevatedButton(
                   onPressed: _getWeather,
+                  style:ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(209, 190, 194, 196),
+                    foregroundColor: const Color.fromARGB(255, 65, 156, 231),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+                  ) ),
                   child: Text(
                     "Get Weather",
                     style: TextStyle(
                       fontSize: 18
                     ),
                   ),
-                  style:ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(209, 190, 194, 196),
-                    foregroundColor: const Color.fromARGB(255, 65, 156, 231),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)
-                  ) )
                   ),
                   if(_isLoading)
                   Padding(padding: EdgeInsets.all(20),child: CircularProgressIndicator(color: Colors.white,),),
